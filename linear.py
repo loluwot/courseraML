@@ -31,7 +31,7 @@ while (abs(aPartialDer(dataset, a, b)) > 0.001) and (abs(bPartialDer(dataset, a,
 	print(str(a)+ " " + str(b))
 	print("Loss: " + str(loss(dataset, a, b)))
 x, y = zip(*dataset)
-pointX = np.linspace(-10,10,100)
+pointX = np.linspace(min(x),max(x),100)
 line = a + b*pointX
 plt.plot(x, y, 'ro')
 plt.plot(pointX, line)
