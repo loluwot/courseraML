@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-learning_rate = 0.01
-dataset = [(1,2), (2,3), (3,5), (7, 10)] #array of tuples (x,y)
+learning_rate = 0.0001
+dataset = [(1,2), (2,3), (3,5), (7, 10), (10, 11), (11, 12)] #array of tuples (x,y)
 #linear function to attempt to model points of form a+bx
 a = 0 
 b = 0
