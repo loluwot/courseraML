@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
-learning_rate = 0.15
-n_degree = 35
-dataset = [[1,1], [2,4], [3,9], [5,25], [6,36], [7,49], [8,64], [9,81], [10,100]]
+learning_rate = 0.175
+n_degree = 5
+approx_degree = 3 #approximate degree of data
+reg_constant = 100
+dataset = [[1,1], [2,8], [3,27], [5,125], [6,6**3], [7,7**3], [8,8**3], [9,9**3], [10,10**3]]
 x1,y1 = zip(*dataset)
 dataset = [[point[0]**i for i in range(1, n_degree+1)] + [point[1]] for point in dataset]
 epoch = 5000
@@ -44,18 +46,21 @@ def partialDer(dataset, coeff, n):
 def isMin(dataset, coeff):
 	min = True
 	for n in range(len(dataset[0])):
-		min = min and (abs(partialDer(dataset, coeff, n)) < 0.001)
+		min = min and (abs(partialDer(dataset, coeff, n)) < 0.005)
 	return min		
 #gradient descent
 while not isMin(dataset, coeff):
 	temp = []
 	for n in range(len(dataset[0])):
-		temp.append(coeff[n] - learning_rate*partialDer(dataset, coeff, n))
-	coeff = temp;
+		if (n <= approx_degree):
+			temp.append(coeff[n] - learning_rate*partialDer(dataset, coeff, n))
+		else:
+			temp.append(coeff[n]*(1-reg_constant*learning_rate/len(dataset)) - learning_rate*partialDer(dataset, coeff, n))
+	coeff = temp
 	#print(coeff)
 	print("Loss: " + str(loss(dataset, coeff)))
 
-print(predict(transform(4), coeff))
+print(predict(transform(11), coeff))
 pointX = np.linspace(min(x1),max(x1)+5,100)
 print(pointX)
 func = predict(transform(pointX), coeff)
