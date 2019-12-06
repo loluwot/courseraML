@@ -1,14 +1,19 @@
 import numpy as np
 import math
-dataset = [[1,2,1], [2,3,0], [3,4,0]]
+import matplotlib.pyplot as plt
+n_degree = 2
+dataset = [[1,1], [2,0], [3,0], [4,1]]
+x1,y1 = zip(*dataset)
 learning_rate = 0.2
 features = np.array([[1] + x[:-1] for x in dataset])
+dataset = [[point[0]**i for i in range(1, n_degree+1)] + [point[1]] for point in dataset]
+
 coeff = np.array([0]*len(dataset[0]))
 
 def predict(features, coeff):
-	val = np.dot(features, coeff)
+	val = np.dot(coeff, features)
 	return 1/(1+math.e**(-1*val)) #logistic function
-
+	
 def loss(dataset, coeff):
 	sum = 0
 	for feature in dataset:
@@ -35,4 +40,14 @@ while not isMin(dataset, coeff):
 	print(coeff)
 	print("Loss: " + str(loss(dataset, coeff)))
 
-print(predict([1,0,1], coeff))
+def transform (x):
+	arr = [x**i for i in range(n_degree+1)]
+	return arr
+
+print(predict(transform(5), coeff))
+pointX = np.linspace(min(x1),max(x1),100)
+print(pointX)
+func = predict(transform(pointX), coeff)
+plt.plot(x1, y1, 'ro')
+plt.plot(pointX, func)
+plt.show()
